@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-
-<title>MOAIVERSE FIGHT X</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MOAI FIGHT</title>
 
 <style>
 
@@ -12,195 +11,186 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
 }
 
 body{
 background:#000;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
 overflow:hidden;
 font-family:Arial;
 }
 
 #game{
 position:relative;
-width:min(100vw,430px);
-height:min(100vh,900px);
-aspect-ratio:9/16;
+width:100vw;
+height:100vh;
 overflow:hidden;
-border:3px solid #f1c40f;
-box-shadow:
-0 0 30px rgba(241,196,15,.6),
-0 0 100px rgba(241,196,15,.15);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+#arena{
+position:relative;
+width:390px;
+height:780px;
+border:3px solid #ffd000;
+box-shadow:0 0 30px #ffd000;
+overflow:hidden;
 background:#000;
 }
 
-.bg{
+#bg{
 position:absolute;
-inset:0;
 width:100%;
 height:100%;
 object-fit:cover;
-filter:
-brightness(.45)
-contrast(1.1)
-saturate(1.1);
 }
 
-#game::before{
-content:"";
+.hud{
 position:absolute;
-inset:0;
-background:
-repeating-linear-gradient(
-to bottom,
-rgba(255,255,255,.02) 0px,
-rgba(255,255,255,.02) 1px,
-transparent 2px,
-transparent 4px
-);
-pointer-events:none;
-z-index:1000;
-}
-
-#hud{
-position:absolute;
-top:10px;
-left:0;
-width:100%;
-padding:0 10px;
+top:15px;
+left:15px;
+right:15px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 z-index:100;
 }
 
-.bar{
-width:125px;
-height:15px;
-background:#111;
-border:2px solid rgba(241,196,15,.6);
-border-radius:4px;
+.hp{
+width:120px;
+height:16px;
+border:2px solid #ffd000;
+border-radius:20px;
 overflow:hidden;
+background:#222;
 }
 
-.hp{
+.hpFill{
 height:100%;
-background:
-linear-gradient(
-90deg,
-#2ecc71,
-#f1c40f,
-#f39c12
-);
-transition:.2s;
+background:linear-gradient(90deg,#00ff88,#ffcc00);
 }
 
 #timer{
-color:#f1c40f;
-font-size:24px;
+color:#ffd000;
+font-size:32px;
 font-weight:bold;
-font-family:monospace;
-background:#111;
-padding:4px 12px;
-border:2px solid rgba(241,196,15,.4);
-border-radius:5px;
 }
 
 .fighter{
 position:absolute;
-bottom:95px;
 width:170px;
-height:auto;
+height:220px;
+bottom:120px;
+}
+
+.body{
+position:absolute;
+width:170px;
+height:220px;
+
+background-size:1020px 220px;
+
+animation:idle .7s steps(6) infinite;
+transform-origin:center bottom;
+}
+
+.face{
+position:absolute;
+width:58px;
+height:58px;
+border-radius:50%;
+object-fit:cover;
+top:18px;
+left:56px;
 z-index:10;
-transition:
-left .08s linear,
-right .08s linear,
-transform .08s linear;
-filter:
-drop-shadow(0 0 10px #000)
-drop-shadow(0 0 25px rgba(255,255,255,.08));
+border:2px solid white;
 }
 
 #p1{
-left:20px;
+left:30px;
 }
 
 #p2{
-right:20px;
+right:30px;
 transform:scaleX(-1);
 }
 
-.walk{
-animation:walk .22s infinite alternate;
+.controls{
+position:absolute;
+bottom:15px;
+left:15px;
+right:15px;
+display:flex;
+justify-content:space-between;
+z-index:100;
 }
 
-@keyframes walk{
-0%{
-transform:translateY(0px);
+.moveBtns,
+.attackBtns{
+display:flex;
+gap:10px;
 }
-100%{
-transform:translateY(-6px);
+
+.btn{
+width:64px;
+height:64px;
+border:none;
+border-radius:14px;
+background:#111;
+color:#ffd000;
+font-size:28px;
+font-weight:bold;
+border:2px solid #ffd000;
 }
+
+.btn:active{
+transform:scale(.9);
+}
+
+.hit{
+animation:hit .25s;
+}
+
+.jump{
+animation:jump .6s linear;
 }
 
 .punch{
-animation:punch .18s linear;
+animation:punch .3s linear;
+}
+
+@keyframes idle{
+from{
+background-position:0 0;
+}
+to{
+background-position:-1020px 0;
+}
 }
 
 @keyframes punch{
 0%{
-transform:translateX(0px);
+transform:translateX(0);
 }
 50%{
-transform:translateX(28px)
-scale(1.05);
+transform:translateX(25px);
 }
 100%{
-transform:translateX(0px);
+transform:translateX(0);
 }
-}
-
-.kick{
-animation:kick .25s linear;
-}
-
-@keyframes kick{
-0%{
-transform:translateX(0px);
-}
-50%{
-transform:
-translateX(35px)
-translateY(-12px)
-scale(1.08);
-}
-100%{
-transform:translateX(0px);
-}
-}
-
-.jump{
-animation:jump .5s linear;
 }
 
 @keyframes jump{
 0%{
-bottom:95px;
+bottom:120px;
 }
 50%{
 bottom:220px;
 }
 100%{
-bottom:95px;
+bottom:120px;
 }
-}
-
-.hit{
-animation:hit .15s linear;
 }
 
 @keyframes hit{
@@ -208,108 +198,11 @@ animation:hit .15s linear;
 filter:brightness(1);
 }
 50%{
-filter:brightness(3);
-transform:
-translateX(-20px)
-rotate(-3deg);
+filter:brightness(4);
 }
 100%{
 filter:brightness(1);
-transform:translateX(0px);
 }
-}
-
-.flash{
-position:absolute;
-width:80px;
-height:80px;
-border-radius:50%;
-background:
-radial-gradient(
-circle,
-rgba(255,255,255,.95),
-rgba(255,255,255,0)
-);
-pointer-events:none;
-z-index:50;
-animation:flash .25s linear forwards;
-}
-
-@keyframes flash{
-0%{
-transform:scale(.2);
-opacity:1;
-}
-100%{
-transform:scale(2);
-opacity:0;
-}
-}
-
-#controls{
-position:absolute;
-bottom:10px;
-left:0;
-width:100%;
-padding:0 10px;
-display:flex;
-justify-content:space-between;
-z-index:200;
-}
-
-.leftCtrl,
-.rightCtrl{
-display:flex;
-gap:10px;
-}
-
-.btn{
-width:62px;
-height:62px;
-display:flex;
-justify-content:center;
-align-items:center;
-background:rgba(15,15,15,.92);
-border:2px solid rgba(241,196,15,.55);
-color:#f1c40f;
-font-size:25px;
-font-weight:bold;
-border-radius:12px;
-box-shadow:
-0 0 15px rgba(241,196,15,.2);
-}
-
-.big{
-width:90px;
-font-size:18px;
-}
-
-#overlay{
-position:absolute;
-inset:0;
-background:rgba(0,0,0,.85);
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:500;
-}
-
-#overlay h1{
-font-size:48px;
-color:#f1c40f;
-text-shadow:
-0 0 25px #f39c12;
-}
-
-#overlay button{
-margin-top:20px;
-padding:14px 32px;
-font-size:18px;
-background:#111;
-border:2px solid #f1c40f;
-color:#f1c40f;
-border-radius:10px;
 }
 
 </style>
@@ -319,120 +212,271 @@ border-radius:10px;
 
 <div id="game">
 
-<img src="Background.png" class="bg">
+<div id="arena">
 
-<div id="hud">
+<img src="Background.png" id="bg">
 
-<div class="bar">
-<div class="hp" id="hp1"></div>
+<div class="hud">
+
+<div class="hp">
+<div class="hpFill" id="hp1"></div>
 </div>
 
 <div id="timer">60</div>
 
-<div class="bar">
-<div class="hp" id="hp2"></div>
+<div class="hp">
+<div class="hpFill" id="hp2"></div>
 </div>
 
 </div>
 
-<img src="Hero2.png" id="p1" class="fighter">
-<img src="Enemy1.png" id="p2" class="fighter">
+<div class="fighter" id="p1">
 
-<div id="controls">
-
-<div class="leftCtrl">
-<div class="btn" id="left">◀</div>
-<div class="btn" id="right">▶</div>
+<div class="body"
+id="body1"
+style="background-image:url('fighter-sprite.png')">
 </div>
 
-<div class="rightCtrl">
-<div class="btn" id="jump">⬆</div>
-<div class="btn big" id="kick">🦵</div>
-<div class="btn big" id="punch">👊</div>
-</div>
+<img src="face1.png" class="face">
 
 </div>
 
-<div id="overlay">
-<h1 id="result">YOU WIN</h1>
-<button onclick="location.reload()">
-PLAY AGAIN
-</button>
+<div class="fighter" id="p2">
+
+<div class="body"
+id="body2"
+style="background-image:url('fighter-sprite.png')">
+</div>
+
+<img src="face2.png" class="face">
+
+</div>
+
+<div class="controls">
+
+<div class="moveBtns">
+
+<button class="btn" id="leftBtn">◀</button>
+
+<button class="btn" id="rightBtn">▶</button>
+
+<button class="btn" id="jumpBtn">⬆</button>
+
+</div>
+
+<div class="attackBtns">
+
+<button class="btn" id="kickBtn">🦶</button>
+
+<button class="btn" id="punchBtn">👊</button>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
 
 <script>
 
-const p1=document.getElementById("p1");
-const p2=document.getElementById("p2");
+const p1 = document.getElementById("p1");
+const p2 = document.getElementById("p2");
 
-const hp1=document.getElementById("hp1");
-const hp2=document.getElementById("hp2");
+const hp1 = document.getElementById("hp1");
+const hp2 = document.getElementById("hp2");
 
-const timer=document.getElementById("timer");
+let p1x = 30;
+let p2x = 190;
 
-const game=document.getElementById("game");
-
-let playerX=20;
-let enemyX=20;
-
-let hpPlayer=100;
-let hpEnemy=100;
-
-hp1.style.width="100%";
-hp2.style.width="100%";
+let hpPlayer = 100;
+let hpEnemy = 100;
 
 function update(){
 
-p1.style.left=playerX+"px";
-p2.style.right=enemyX+"px";
+p1.style.left = p1x + "px";
+p2.style.right = (390 - p2x - 170) + "px";
+
+hp1.style.width = hpPlayer + "%";
+hp2.style.width = hpEnemy + "%";
 
 }
 
-function flash(x,y){
+update();
 
-const f=document.createElement("div");
+document.getElementById("leftBtn").onclick = ()=>{
 
-f.className="flash";
+p1x -= 15;
 
-f.style.left=x+"px";
-f.style.top=y+"px";
+if(p1x < 0){
+p1x = 0;
+}
 
-game.appendChild(f);
+update();
+
+};
+
+document.getElementById("rightBtn").onclick = ()=>{
+
+p1x += 15;
+
+if(p1x > 210){
+p1x = 210;
+}
+
+update();
+
+};
+
+document.getElementById("jumpBtn").onclick = ()=>{
+
+p1.classList.add("jump");
 
 setTimeout(()=>{
-f.remove();
+p1.classList.remove("jump");
+},600);
+
+};
+
+document.getElementById("punchBtn").onclick = ()=>{
+
+p1.classList.add("punch");
+
+setTimeout(()=>{
+p1.classList.remove("punch");
+},300);
+
+let distance = Math.abs(p1x - p2x);
+
+if(distance < 120){
+
+hpEnemy -= 10;
+
+if(hpEnemy < 0){
+hpEnemy = 0;
+}
+
+p2.classList.add("hit");
+
+setTimeout(()=>{
+p2.classList.remove("hit");
+},250);
+
+update();
+
+}
+
+};
+
+document.getElementById("kickBtn").onclick = ()=>{
+
+let distance = Math.abs(p1x - p2x);
+
+if(distance < 130){
+
+hpEnemy -= 15;
+
+if(hpEnemy < 0){
+hpEnemy = 0;
+}
+
+p2.classList.add("hit");
+
+setTimeout(()=>{
+p2.classList.remove("hit");
+},250);
+
+update();
+
+}
+
+};
+
+setInterval(()=>{
+
+if(hpEnemy <= 0){
+alert("YOU WIN");
+location.reload();
+}
+
+if(hpPlayer <= 0){
+alert("YOU LOSE");
+location.reload();
+}
+
+let ai = Math.random();
+
+if(ai > .5){
+
+p2x -= 10;
+
+}else{
+
+p2x += 10;
+
+}
+
+if(p2x < 120){
+p2x = 120;
+}
+
+if(p2x > 250){
+p2x = 250;
+}
+
+let dist = Math.abs(p1x - p2x);
+
+if(dist < 120){
+
+hpPlayer -= 5;
+
+if(hpPlayer < 0){
+hpPlayer = 0;
+}
+
+p1.classList.add("hit");
+
+setTimeout(()=>{
+p1.classList.remove("hit");
 },250);
 
 }
 
-function enemyDamage(dmg){
+update();
 
-hpEnemy-=dmg;
+},800);
 
-if(hpEnemy<0)hpEnemy=0;
+let time = 60;
 
-hp2.style.width=hpEnemy+"%";
+setInterval(()=>{
 
-p2.classList.add("hit");
+time--;
 
-flash(260,420);
+document.getElementById("timer").innerText = time;
 
-navigator.vibrate?.(40);
+if(time <= 0){
 
-setTimeout(()=>{
-p2.classList.remove("hit");
-},150);
+if(hpPlayer > hpEnemy){
 
-if(hpEnemy<=0){
-finish("YOU WIN");
+alert("PLAYER WIN");
+
+}else if(hpEnemy > hpPlayer){
+
+alert("ENEMY WIN");
+
+}else{
+
+alert("DRAW");
+
 }
 
+location.reload();
+
 }
 
-function playerDamage(dmg){
+},1000);
 
-hpPlayer-=dmg;
+</script>
 
-if
+</body>
+</html>
