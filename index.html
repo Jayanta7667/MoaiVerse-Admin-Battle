@@ -1,442 +1,221 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<div class="fighter player">
 
-<title>MOAI CONTRA</title>
+  <div class="head"></div>
+
+  <div class="body">
+    <div class="arm left-arm"></div>
+    <div class="arm right-arm"></div>
+
+    <div class="torso"></div>
+
+    <div class="leg left-leg"></div>
+    <div class="leg right-leg"></div>
+  </div>
+
+</div>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
-}
 
-body{
-background:#000;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-overflow:hidden;
-font-family:Arial;
-}
-
-#game{
-position:relative;
-width:min(100vw,430px);
-height:min(100vh,900px);
-aspect-ratio:9/16;
-overflow:hidden;
-background:#000;
-border:3px solid #f1c40f;
-box-shadow:
-0 0 25px rgba(241,196,15,.5),
-0 0 80px rgba(241,196,15,.15);
-}
-
-#game::before{
-content:"";
-position:absolute;
-inset:0;
-background:
-repeating-linear-gradient(
-to bottom,
-rgba(255,255,255,.03) 0px,
-rgba(255,255,255,.03) 1px,
-transparent 2px,
-transparent 4px
-);
-pointer-events:none;
-z-index:100;
-}
-
-.bg{
-position:absolute;
-inset:0;
-width:100%;
-height:100%;
-object-fit:cover;
-filter:
-brightness(.45)
-contrast(1.2)
-saturate(1.1);
-}
-
-#hud{
-position:absolute;
-top:10px;
-left:0;
-width:100%;
-padding:0 10px;
-z-index:50;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.hpTrack{
-width:120px;
-height:14px;
-background:#111;
-border:2px solid rgba(241,196,15,.5);
-overflow:hidden;
-border-radius:4px;
-}
-
-.hp{
-height:100%;
-background:
-linear-gradient(
-90deg,
-#2ecc71,
-#f1c40f,
-#f39c12
-);
-}
-
-.timer{
-color:#f1c40f;
-font-size:22px;
-font-weight:bold;
-font-family:monospace;
-background:#111;
-padding:4px 12px;
-border:2px solid rgba(241,196,15,.4);
-border-radius:5px;
-}
-
-#p1,#p2{
+.fighter{
 position:absolute;
 bottom:100px;
-width:170px;
+left:40px;
+width:140px;
+height:260px;
 z-index:10;
-transition:transform .08s;
-transform-origin:bottom center;
-filter:
-drop-shadow(0 0 12px rgba(0,0,0,.9))
-drop-shadow(0 0 20px rgba(255,255,255,.08));
+animation:idle 0.8s infinite alternate;
 }
 
-#p1{
+.head{
+width:72px;
+height:72px;
+border-radius:50%;
+background:url("HeroFace.png");
+background-size:cover;
+background-position:center;
+position:absolute;
+top:0;
+left:34px;
+border:3px solid #fff;
+box-shadow:0 0 15px rgba(255,255,255,.5);
+}
+
+.torso{
+position:absolute;
+top:70px;
+left:42px;
+width:55px;
+height:90px;
+background:#111;
+border-radius:12px;
+border:2px solid #444;
+}
+
+.arm{
+position:absolute;
+width:18px;
+height:75px;
+background:#222;
+top:75px;
+border-radius:20px;
+transform-origin:top center;
+}
+
+.left-arm{
 left:20px;
+animation:leftArm 0.6s infinite alternate;
 }
 
-#p2{
+.right-arm{
 right:20px;
-transform:scaleX(-1);
+animation:rightArm 0.6s infinite alternate;
 }
 
-.hit{
-animation:hit .18s linear;
+.leg{
+position:absolute;
+width:20px;
+height:90px;
+background:#111;
+top:150px;
+border-radius:20px;
+transform-origin:top center;
 }
 
-@keyframes hit{
-0%{transform:translateX(0)}
-50%{transform:translateX(-20px)}
-100%{transform:translateX(0)}
+.left-leg{
+left:45px;
+animation:leftLeg 0.5s infinite alternate;
 }
 
-.attack{
-animation:attack .2s linear;
+.right-leg{
+right:45px;
+animation:rightLeg 0.5s infinite alternate;
 }
 
-@keyframes attack{
-0%{transform:translateX(0)}
-50%{transform:translateX(25px)}
-100%{transform:translateX(0)}
+@keyframes idle{
+0%{
+transform:translateY(0px);
+}
+100%{
+transform:translateY(-5px);
+}
+}
+
+@keyframes leftArm{
+0%{
+transform:rotate(20deg);
+}
+100%{
+transform:rotate(-20deg);
+}
+}
+
+@keyframes rightArm{
+0%{
+transform:rotate(-20deg);
+}
+100%{
+transform:rotate(20deg);
+}
+}
+
+@keyframes leftLeg{
+0%{
+transform:rotate(10deg);
+}
+100%{
+transform:rotate(-10deg);
+}
+}
+
+@keyframes rightLeg{
+0%{
+transform:rotate(-10deg);
+}
+100%{
+transform:rotate(10deg);
+}
+}
+
+.punch .right-arm{
+animation:punch 0.2s linear;
+}
+
+@keyframes punch{
+0%{
+transform:rotate(0deg);
+}
+50%{
+transform:rotate(-100deg) translateX(25px);
+}
+100%{
+transform:rotate(0deg);
+}
+}
+
+.kick .right-leg{
+animation:kick 0.25s linear;
+}
+
+@keyframes kick{
+0%{
+transform:rotate(0deg);
+}
+50%{
+transform:rotate(-70deg) translateY(-20px);
+}
+100%{
+transform:rotate(0deg);
+}
 }
 
 .jump{
-animation:jump .5s linear;
+animation:jumpAnim .5s linear;
 }
 
-@keyframes jump{
-0%{bottom:100px}
-50%{bottom:210px}
-100%{bottom:100px}
+@keyframes jumpAnim{
+0%{
+bottom:100px;
 }
-
-#controls{
-position:absolute;
-bottom:12px;
-left:0;
-width:100%;
-padding:0 10px;
-display:flex;
-justify-content:space-between;
-align-items:flex-end;
-z-index:30;
+50%{
+bottom:230px;
 }
-
-.leftCtrl,
-.rightCtrl{
-display:flex;
-gap:10px;
+100%{
+bottom:100px;
 }
-
-.btn{
-width:60px;
-height:60px;
-display:flex;
-justify-content:center;
-align-items:center;
-border-radius:10px;
-background:rgba(20,20,20,.92);
-border:2px solid rgba(241,196,15,.5);
-color:#f1c40f;
-font-size:22px;
-font-weight:bold;
-box-shadow:0 0 12px rgba(241,196,15,.2);
-}
-
-.bigBtn{
-width:90px;
-font-size:17px;
-}
-
-#overlay{
-position:absolute;
-inset:0;
-background:rgba(0,0,0,.84);
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:200;
-}
-
-#overlay h1{
-font-size:42px;
-color:#f1c40f;
-text-shadow:0 0 20px #f39c12;
-}
-
-#overlay button{
-margin-top:20px;
-padding:12px 25px;
-background:#111;
-border:2px solid #f1c40f;
-color:#f1c40f;
-font-size:18px;
-border-radius:8px;
 }
 
 </style>
-</head>
-
-<body>
-
-<div id="game">
-
-<img src="Background.png" class="bg">
-
-<div id="hud">
-
-<div class="hpTrack">
-<div class="hp" id="hp1"></div>
-</div>
-
-<div class="timer" id="timer">
-60
-</div>
-
-<div class="hpTrack">
-<div class="hp" id="hp2"></div>
-</div>
-
-</div>
-
-<img src="Hero2.png" id="p1">
-<img src="Enemy1.png" id="p2">
-
-<div id="controls">
-
-<div class="leftCtrl">
-<div class="btn" id="left">◀</div>
-<div class="btn" id="right">▶</div>
-</div>
-
-<div class="rightCtrl">
-<div class="btn" id="jump">⬆</div>
-<div class="btn bigBtn" id="kick">🦵</div>
-<div class="btn bigBtn" id="punch">👊</div>
-</div>
-
-</div>
-
-<div id="overlay">
-<h1 id="result">YOU WIN</h1>
-<button onclick="location.reload()">PLAY AGAIN</button>
-</div>
-
-</div>
 
 <script>
 
-const p1=document.getElementById("p1");
-const p2=document.getElementById("p2");
+const fighter=document.querySelector(".fighter");
 
-const hp1=document.getElementById("hp1");
-const hp2=document.getElementById("hp2");
+document.addEventListener("keydown",(e)=>{
 
-const timer=document.getElementById("timer");
+if(e.key==="x"){
+fighter.classList.add("punch");
 
-let x1=20;
-let x2=240;
-
-let health1=100;
-let health2=100;
-
-hp1.style.width="100%";
-hp2.style.width="100%";
-
-function updatePos(){
-p1.style.left=x1+"px";
-p2.style.right=(430-x2-170)+"px";
+setTimeout(()=>{
+fighter.classList.remove("punch");
+},200);
 }
 
-updatePos();
+if(e.key==="z"){
+fighter.classList.add("kick");
 
-document.getElementById("left").ontouchstart=()=>{
-x1-=18;
-if(x1<0)x1=0;
-p1.style.transform="scaleX(-1)";
-updatePos();
-};
-
-document.getElementById("right").ontouchstart=()=>{
-x1+=18;
-if(x1>250)x1=250;
-p1.style.transform="scaleX(1)";
-updatePos();
-};
-
-document.getElementById("jump").ontouchstart=()=>{
-p1.classList.add("jump");
 setTimeout(()=>{
-p1.classList.remove("jump");
+fighter.classList.remove("kick");
+},250);
+}
+
+if(e.key===" "){
+fighter.classList.add("jump");
+
+setTimeout(()=>{
+fighter.classList.remove("jump");
 },500);
-};
-
-function enemyHit(dmg){
-
-health2-=dmg;
-
-if(health2<0)health2=0;
-
-hp2.style.width=health2+"%";
-
-p2.classList.add("hit");
-
-setTimeout(()=>{
-p2.classList.remove("hit");
-},180);
-
-if(health2<=0){
-finish("YOU WIN");
 }
 
-}
-
-document.getElementById("punch").ontouchstart=()=>{
-
-p1.classList.add("attack");
-
-setTimeout(()=>{
-p1.classList.remove("attack");
-},180);
-
-enemyHit(10);
-
-};
-
-document.getElementById("kick").ontouchstart=()=>{
-
-p1.classList.add("attack");
-
-setTimeout(()=>{
-p1.classList.remove("attack");
-},180);
-
-enemyHit(18);
-
-};
-
-function enemyAI(){
-
-if(health2<=0)return;
-
-if(Math.random()<0.5){
-x2-=10;
-}else{
-x2+=10;
-}
-
-if(x2<150)x2=150;
-if(x2>300)x2=300;
-
-updatePos();
-
-if(Math.abs(x1-x2)<130){
-
-health1-=8;
-
-if(health1<0)health1=0;
-
-hp1.style.width=health1+"%";
-
-p1.classList.add("hit");
-
-setTimeout(()=>{
-p1.classList.remove("hit");
-},180);
-
-if(health1<=0){
-finish("YOU LOSE");
-}
-
-}
-
-}
-
-setInterval(enemyAI,1200);
-
-let time=60;
-
-const gameTimer=setInterval(()=>{
-
-time--;
-
-timer.innerText=time;
-
-if(time<=0){
-
-clearInterval(gameTimer);
-
-if(health1>health2){
-finish("YOU WIN");
-}else if(health2>health1){
-finish("YOU LOSE");
-}else{
-finish("DRAW");
-}
-
-}
-
-},1000);
-
-function finish(text){
-
-document.getElementById("result").innerText=text;
-
-document.getElementById("overlay").style.display="flex";
-
-}
+});
 
 </script>
-
-</body>
-</html>
