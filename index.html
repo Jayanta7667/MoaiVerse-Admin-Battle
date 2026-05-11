@@ -1,6 +1,12 @@
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-/* FULL GAME FIX */
+<title>MOAIVERSE ADMIN BATTLE</title>
+
+<style>
 
 body{
 margin:0;
@@ -16,29 +22,20 @@ height:100vh;
 overflow:hidden;
 }
 
-/* BACKGROUND */
-
 .bg{
 position:absolute;
 width:100%;
 height:100%;
 object-fit:cover;
-filter:brightness(0.75);
 }
-
-/* FLOOR */
 
 .floor{
 position:absolute;
 bottom:0;
 width:100%;
-height:22%;
-background:rgba(0,0,0,0.35);
-backdrop-filter:blur(2px);
-border-top:4px solid rgba(255,255,255,0.2);
+height:25%;
+background:rgba(0,0,0,0.4);
 }
-
-/* TOP UI */
 
 .top{
 position:absolute;
@@ -48,16 +45,16 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:0 10px;
-z-index:20;
+z-index:10;
 }
 
 .hp{
-width:32%;
+width:35%;
 height:18px;
 background:#222;
+border:2px solid white;
 border-radius:20px;
 overflow:hidden;
-border:2px solid white;
 }
 
 .fill{
@@ -68,48 +65,33 @@ background:red;
 
 .timer{
 color:yellow;
-font-size:34px;
+font-size:35px;
 font-weight:bold;
-text-shadow:0 0 10px black;
 }
-
-/* CHARACTERS */
 
 .character{
 position:absolute;
 bottom:90px;
-width:150px;
+width:140px;
 transition:0.15s;
-z-index:10;
 }
-
-/* LEFT */
 
 .left{
-left:40px;
-animation:leftIdle 1s infinite alternate;
+left:20px;
+animation:idle1 1s infinite alternate;
 }
-
-/* RIGHT */
 
 .right{
-right:40px;
+right:20px;
 transform:scaleX(-1);
-animation:rightIdle 1s infinite alternate;
+animation:idle2 1s infinite alternate;
 }
-
-/* IMAGE */
 
 .character img{
 width:100%;
-height:auto;
-object-fit:contain;
-filter:drop-shadow(0 0 15px black);
 }
 
-/* IDLE */
-
-@keyframes leftIdle{
+@keyframes idle1{
 from{
 transform:translateY(0px);
 }
@@ -118,7 +100,7 @@ transform:translateY(-8px);
 }
 }
 
-@keyframes rightIdle{
+@keyframes idle2{
 from{
 transform:scaleX(-1) translateY(0px);
 }
@@ -127,15 +109,13 @@ transform:scaleX(-1) translateY(-8px);
 }
 }
 
-/* BUTTONS */
-
 .controls-left{
 position:absolute;
 bottom:20px;
 left:20px;
 display:flex;
-gap:15px;
-z-index:20;
+gap:10px;
+z-index:10;
 }
 
 .controls-right{
@@ -143,64 +123,73 @@ position:absolute;
 bottom:20px;
 right:20px;
 display:flex;
-gap:15px;
-z-index:20;
+gap:10px;
+z-index:10;
 }
 
 .btn{
-width:70px;
-height:70px;
+width:65px;
+height:65px;
 border-radius:50%;
-background:rgba(255,255,255,0.18);
-border:3px solid rgba(255,255,255,0.4);
+background:rgba(255,255,255,0.2);
+border:2px solid rgba(255,255,255,0.5);
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:30px;
+font-size:28px;
 color:white;
-backdrop-filter:blur(4px);
-}
-
-/* MOBILE */
-
-@media(max-width:700px){
-
-.character{
-width:120px;
-bottom:110px;
-}
-
-.left{
-left:5px;
-}
-
-.right{
-right:5px;
-}
-
-.btn{
-width:60px;
-height:60px;
-font-size:25px;
-}
-
-.timer{
-font-size:26px;
-}
-
 }
 
 </style>
+</head>
+
+<body>
+
+<div class="game">
+
+<img src="Background.png" class="bg">
+
+<div class="floor"></div>
+
+<div class="top">
+
+<div class="hp">
+<div class="fill"></div>
+</div>
+
+<div class="timer">40</div>
+
+<div class="hp">
+<div class="fill"></div>
+</div>
+
+</div>
+
+<div class="character left" id="player">
+<img src="Hero1.png">
+</div>
+
+<div class="character right" id="enemy">
+<img src="Enemy1.png">
+</div>
+
+<div class="controls-left">
+<div class="btn" onclick="moveLeft()">◀</div>
+<div class="btn" onclick="moveRight()">▶</div>
+</div>
+
+<div class="controls-right">
+<div class="btn" onclick="attack()">👊</div>
+<div class="btn" onclick="jump()">▲</div>
+</div>
+
+</div>
 
 <script>
 
-/* PLAYER */
+const player = document.getElementById("player");
 
-const player = document.querySelector(".left");
-
-let pos = 5;
-
-/* MOVE LEFT */
+let pos = 20;
 
 function moveLeft(){
 
@@ -214,21 +203,17 @@ player.style.left = pos + "px";
 
 }
 
-/* MOVE RIGHT */
-
 function moveRight(){
 
 pos += 20;
 
-if(pos > window.innerWidth - 120){
-pos = window.innerWidth - 120;
+if(pos > window.innerWidth - 140){
+pos = window.innerWidth - 140;
 }
 
 player.style.left = pos + "px";
 
 }
-
-/* JUMP */
 
 function jump(){
 
@@ -236,17 +221,15 @@ player.style.bottom = "180px";
 
 setTimeout(()=>{
 
-player.style.bottom = "110px";
+player.style.bottom = "90px";
 
 },300);
 
 }
 
-/* ATTACK */
-
 function attack(){
 
-const enemy = document.querySelector(".right");
+const enemy = document.getElementById("enemy");
 
 enemy.style.transform =
 "scaleX(-1) translateX(25px)";
@@ -261,3 +244,6 @@ enemy.style.transform =
 }
 
 </script>
+
+</body>
+</html>
