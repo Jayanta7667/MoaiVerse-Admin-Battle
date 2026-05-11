@@ -1,51 +1,139 @@
-<div class="fighter player">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div class="head"></div>
-
-  <div class="body">
-    <div class="arm left-arm"></div>
-    <div class="arm right-arm"></div>
-
-    <div class="torso"></div>
-
-    <div class="leg left-leg"></div>
-    <div class="leg right-leg"></div>
-  </div>
-
-</div>
+<title>MOAIVERSE FIGHT</title>
 
 <style>
 
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+body{
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+font-family:Arial;
+}
+
+#game{
+position:relative;
+width:min(100vw,430px);
+height:min(100vh,900px);
+aspect-ratio:9/16;
+overflow:hidden;
+border:3px solid #f1c40f;
+box-shadow:
+0 0 25px rgba(241,196,15,.5),
+0 0 90px rgba(241,196,15,.2);
+background:#000;
+}
+
+.bg{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+filter:brightness(.45);
+}
+
+#hud{
+position:absolute;
+top:10px;
+left:0;
+width:100%;
+padding:0 10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:100;
+}
+
+.bar{
+width:120px;
+height:15px;
+border:2px solid #f1c40f;
+background:#111;
+border-radius:5px;
+overflow:hidden;
+}
+
+.hp{
+height:100%;
+background:
+linear-gradient(
+90deg,
+#2ecc71,
+#f1c40f,
+#f39c12
+);
+}
+
+#timer{
+color:#f1c40f;
+font-size:22px;
+font-weight:bold;
+background:#111;
+padding:4px 12px;
+border-radius:5px;
+border:2px solid rgba(241,196,15,.4);
+}
+
 .fighter{
 position:absolute;
-bottom:100px;
-left:40px;
-width:140px;
+bottom:95px;
+width:150px;
 height:260px;
 z-index:10;
-animation:idle 0.8s infinite alternate;
+animation:idle .8s infinite alternate;
+}
+
+.player{
+left:30px;
+}
+
+.enemy{
+right:30px;
+transform:scaleX(-1);
 }
 
 .head{
-width:72px;
-height:72px;
+width:70px;
+height:70px;
 border-radius:50%;
-background:url("HeroFace.png");
+position:absolute;
+left:40px;
+top:0;
 background-size:cover;
 background-position:center;
-position:absolute;
-top:0;
-left:34px;
 border:3px solid #fff;
-box-shadow:0 0 15px rgba(255,255,255,.5);
+box-shadow:0 0 15px rgba(255,255,255,.4);
+}
+
+.player .head{
+background-image:url("Hero2.png");
+}
+
+.enemy .head{
+background-image:url("Enemy1.png");
 }
 
 .torso{
 position:absolute;
-top:70px;
-left:42px;
+top:72px;
+left:45px;
 width:55px;
-height:90px;
+height:85px;
 background:#111;
 border-radius:12px;
 border:2px solid #444;
@@ -56,19 +144,19 @@ position:absolute;
 width:18px;
 height:75px;
 background:#222;
-top:75px;
+top:78px;
 border-radius:20px;
 transform-origin:top center;
 }
 
 .left-arm{
 left:20px;
-animation:leftArm 0.6s infinite alternate;
+animation:leftArm .6s infinite alternate;
 }
 
 .right-arm{
 right:20px;
-animation:rightArm 0.6s infinite alternate;
+animation:rightArm .6s infinite alternate;
 }
 
 .leg{
@@ -83,139 +171,411 @@ transform-origin:top center;
 
 .left-leg{
 left:45px;
-animation:leftLeg 0.5s infinite alternate;
+animation:leftLeg .5s infinite alternate;
 }
 
 .right-leg{
 right:45px;
-animation:rightLeg 0.5s infinite alternate;
+animation:rightLeg .5s infinite alternate;
 }
 
 @keyframes idle{
-0%{
-transform:translateY(0px);
-}
-100%{
-transform:translateY(-5px);
-}
+0%{transform:translateY(0px);}
+100%{transform:translateY(-4px);}
 }
 
 @keyframes leftArm{
-0%{
-transform:rotate(20deg);
-}
-100%{
-transform:rotate(-20deg);
-}
+0%{transform:rotate(20deg);}
+100%{transform:rotate(-20deg);}
 }
 
 @keyframes rightArm{
-0%{
-transform:rotate(-20deg);
-}
-100%{
-transform:rotate(20deg);
-}
+0%{transform:rotate(-20deg);}
+100%{transform:rotate(20deg);}
 }
 
 @keyframes leftLeg{
-0%{
-transform:rotate(10deg);
-}
-100%{
-transform:rotate(-10deg);
-}
+0%{transform:rotate(10deg);}
+100%{transform:rotate(-10deg);}
 }
 
 @keyframes rightLeg{
-0%{
-transform:rotate(-10deg);
-}
-100%{
-transform:rotate(10deg);
-}
+0%{transform:rotate(-10deg);}
+100%{transform:rotate(10deg);}
 }
 
 .punch .right-arm{
-animation:punch 0.2s linear;
+animation:punch .2s linear;
 }
 
 @keyframes punch{
-0%{
-transform:rotate(0deg);
-}
+0%{transform:rotate(0deg);}
 50%{
-transform:rotate(-100deg) translateX(25px);
+transform:rotate(-110deg)
+translateX(25px);
 }
-100%{
-transform:rotate(0deg);
-}
+100%{transform:rotate(0deg);}
 }
 
 .kick .right-leg{
-animation:kick 0.25s linear;
+animation:kick .25s linear;
 }
 
 @keyframes kick{
-0%{
-transform:rotate(0deg);
-}
+0%{transform:rotate(0deg);}
 50%{
-transform:rotate(-70deg) translateY(-20px);
+transform:rotate(-70deg)
+translateY(-20px);
 }
-100%{
-transform:rotate(0deg);
-}
+100%{transform:rotate(0deg);}
 }
 
 .jump{
-animation:jumpAnim .5s linear;
+animation:jump .5s linear;
 }
 
-@keyframes jumpAnim{
-0%{
-bottom:100px;
+@keyframes jump{
+0%{bottom:95px;}
+50%{bottom:220px;}
+100%{bottom:95px;}
 }
+
+.hit{
+animation:hit .18s linear;
+}
+
+@keyframes hit{
+0%{filter:brightness(1);}
 50%{
-bottom:230px;
+filter:brightness(3);
+transform:translateX(-15px);
 }
 100%{
-bottom:100px;
+filter:brightness(1);
+transform:translateX(0px);
 }
+}
+
+#controls{
+position:absolute;
+bottom:10px;
+left:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+padding:0 10px;
+z-index:200;
+}
+
+.leftCtrl,
+.rightCtrl{
+display:flex;
+gap:10px;
+}
+
+.btn{
+width:62px;
+height:62px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:24px;
+background:rgba(10,10,10,.92);
+color:#f1c40f;
+border:2px solid rgba(241,196,15,.5);
+border-radius:12px;
+box-shadow:0 0 15px rgba(241,196,15,.15);
+}
+
+.big{
+width:90px;
+font-size:18px;
+}
+
+#resultBox{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.86);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:500;
+}
+
+#result{
+font-size:45px;
+color:#f1c40f;
+text-shadow:0 0 20px #f39c12;
+}
+
+#restart{
+margin-top:20px;
+padding:12px 30px;
+font-size:18px;
+background:#111;
+color:#f1c40f;
+border:2px solid #f1c40f;
+border-radius:10px;
 }
 
 </style>
+</head>
+
+<body>
+
+<div id="game">
+
+<img src="Background.png" class="bg">
+
+<div id="hud">
+
+<div class="bar">
+<div class="hp" id="hp1"></div>
+</div>
+
+<div id="timer">60</div>
+
+<div class="bar">
+<div class="hp" id="hp2"></div>
+</div>
+
+</div>
+
+<div class="fighter player" id="player">
+
+<div class="head"></div>
+
+<div class="torso"></div>
+
+<div class="arm left-arm"></div>
+<div class="arm right-arm"></div>
+
+<div class="leg left-leg"></div>
+<div class="leg right-leg"></div>
+
+</div>
+
+<div class="fighter enemy" id="enemy">
+
+<div class="head"></div>
+
+<div class="torso"></div>
+
+<div class="arm left-arm"></div>
+<div class="arm right-arm"></div>
+
+<div class="leg left-leg"></div>
+<div class="leg right-leg"></div>
+
+</div>
+
+<div id="controls">
+
+<div class="leftCtrl">
+<div class="btn" id="left">◀</div>
+<div class="btn" id="right">▶</div>
+</div>
+
+<div class="rightCtrl">
+<div class="btn" id="jump">⬆</div>
+<div class="btn big" id="kick">🦵</div>
+<div class="btn big" id="punch">👊</div>
+</div>
+
+</div>
+
+<div id="resultBox">
+
+<div id="result">YOU WIN</div>
+
+<button id="restart">
+PLAY AGAIN
+</button>
+
+</div>
+
+</div>
 
 <script>
 
-const fighter=document.querySelector(".fighter");
+const player=document.getElementById("player");
+const enemy=document.getElementById("enemy");
 
-document.addEventListener("keydown",(e)=>{
+const hp1=document.getElementById("hp1");
+const hp2=document.getElementById("hp2");
 
-if(e.key==="x"){
-fighter.classList.add("punch");
+const timer=document.getElementById("timer");
 
-setTimeout(()=>{
-fighter.classList.remove("punch");
-},200);
+let playerX=30;
+let enemyX=30;
+
+let health1=100;
+let health2=100;
+
+hp1.style.width="100%";
+hp2.style.width="100%";
+
+function updatePlayer(){
+player.style.left=playerX+"px";
 }
 
-if(e.key==="z"){
-fighter.classList.add("kick");
-
-setTimeout(()=>{
-fighter.classList.remove("kick");
-},250);
+function updateEnemy(){
+enemy.style.right=enemyX+"px";
 }
 
-if(e.key===" "){
-fighter.classList.add("jump");
+function hitEnemy(dmg){
+
+health2-=dmg;
+
+if(health2<0)health2=0;
+
+hp2.style.width=health2+"%";
+
+enemy.classList.add("hit");
 
 setTimeout(()=>{
-fighter.classList.remove("jump");
+enemy.classList.remove("hit");
+},180);
+
+if(health2<=0){
+finish("YOU WIN");
+}
+
+}
+
+function enemyAttack(){
+
+if(health2<=0)return;
+
+if(Math.random()<0.5){
+enemyX+=10;
+}else{
+enemyX-=10;
+}
+
+if(enemyX<20)enemyX=20;
+if(enemyX>180)enemyX=180;
+
+updateEnemy();
+
+health1-=6;
+
+if(health1<0)health1=0;
+
+hp1.style.width=health1+"%";
+
+player.classList.add("hit");
+
+setTimeout(()=>{
+player.classList.remove("hit");
+},180);
+
+if(health1<=0){
+finish("YOU LOSE");
+}
+
+}
+
+setInterval(enemyAttack,1500);
+
+document.getElementById("left").ontouchstart=()=>{
+
+playerX-=18;
+
+if(playerX<0)playerX=0;
+
+player.style.transform="scaleX(-1)";
+
+updatePlayer();
+
+};
+
+document.getElementById("right").ontouchstart=()=>{
+
+playerX+=18;
+
+if(playerX>230)playerX=230;
+
+player.style.transform="scaleX(1)";
+
+updatePlayer();
+
+};
+
+document.getElementById("jump").ontouchstart=()=>{
+
+player.classList.add("jump");
+
+setTimeout(()=>{
+player.classList.remove("jump");
 },500);
+
+};
+
+document.getElementById("punch").ontouchstart=()=>{
+
+player.classList.add("punch");
+
+setTimeout(()=>{
+player.classList.remove("punch");
+},200);
+
+hitEnemy(10);
+
+};
+
+document.getElementById("kick").ontouchstart=()=>{
+
+player.classList.add("kick");
+
+setTimeout(()=>{
+player.classList.remove("kick");
+},250);
+
+hitEnemy(18);
+
+};
+
+let time=60;
+
+const gameTime=setInterval(()=>{
+
+time--;
+
+timer.innerText=time;
+
+if(time<=0){
+
+clearInterval(gameTime);
+
+if(health1>health2){
+finish("YOU WIN");
+}else if(health2>health1){
+finish("YOU LOSE");
+}else{
+finish("DRAW");
 }
 
-});
+}
+
+},1000);
+
+function finish(text){
+
+document.getElementById("result").innerText=text;
+
+document.getElementById("resultBox").style.display="flex";
+
+}
+
+document.getElementById("restart").onclick=()=>{
+
+location.reload();
+
+};
 
 </script>
+
+</body>
+</html>
