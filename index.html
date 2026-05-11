@@ -1,143 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>MOAIVERSE ADMIN BATTLE</title>
 
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
 body{
-margin:0;
 overflow:hidden;
 background:black;
 font-family:Arial;
+touch-action:none;
 }
 
-.game{
+#game{
 position:relative;
 width:100vw;
 height:100vh;
 overflow:hidden;
 }
 
-.bg{
+#bg{
 position:absolute;
 width:100%;
 height:100%;
 object-fit:cover;
 }
 
-.floor{
+.player{
 position:absolute;
-bottom:0;
-width:100%;
-height:25%;
-background:rgba(0,0,0,0.4);
+bottom:70px;
+width:130px;
+height:260px;
+object-fit:contain;
+transition:0.1s;
 }
 
-.top{
-position:absolute;
-top:10px;
-width:100%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:0 10px;
-z-index:10;
+#hero{
+left:40px;
 }
 
-.hp{
-width:35%;
-height:18px;
-background:#222;
+#enemy{
+right:40px;
+transform:scaleX(-1);
+}
+
+.hpbar{
+position:absolute;
+top:20px;
+width:140px;
+height:20px;
 border:2px solid white;
 border-radius:20px;
+background:#222;
 overflow:hidden;
 }
 
-.fill{
-width:100%;
+#heroBar{
+left:10px;
+}
+
+#enemyBar{
+right:10px;
+}
+
+.hp{
 height:100%;
-background:red;
-}
-
-.timer{
-color:yellow;
-font-size:35px;
-font-weight:bold;
-}
-
-.character{
-position:absolute;
-bottom:90px;
-width:140px;
-transition:0.15s;
-}
-
-.left{
-left:20px;
-animation:idle1 1s infinite alternate;
-}
-
-.right{
-right:20px;
-transform:scaleX(-1);
-animation:idle2 1s infinite alternate;
-}
-
-.character img{
 width:100%;
+background:lime;
+transition:0.2s;
 }
 
-@keyframes idle1{
-from{
-transform:translateY(0px);
-}
-to{
-transform:translateY(-8px);
-}
-}
-
-@keyframes idle2{
-from{
-transform:scaleX(-1) translateY(0px);
-}
-to{
-transform:scaleX(-1) translateY(-8px);
-}
-}
-
-.controls-left{
+#title{
 position:absolute;
-bottom:20px;
-left:20px;
-display:flex;
-gap:10px;
-z-index:10;
-}
-
-.controls-right{
-position:absolute;
-bottom:20px;
-right:20px;
-display:flex;
-gap:10px;
-z-index:10;
-}
-
-.btn{
-width:65px;
-height:65px;
-border-radius:50%;
-background:rgba(255,255,255,0.2);
-border:2px solid rgba(255,255,255,0.5);
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:28px;
+top:20px;
+left:50%;
+transform:translateX(-50%);
 color:white;
+font-weight:bold;
+font-size:18px;
+}
+
+.controls{
+position:absolute;
+bottom:10px;
+width:100%;
+display:flex;
+justify-content:space-between;
+padding:0 15px;
+}
+
+.leftBtns,
+.rightBtns{
+display:flex;
+gap:10px;
+}
+
+button{
+width:70px;
+height:70px;
+border:none;
+border-radius:20px;
+font-size:28px;
+background:rgba(255,255,255,0.2);
+color:white;
+backdrop-filter:blur(5px);
+}
+
+button:active{
+transform:scale(0.9);
+background:#ff00ff;
+}
+
+.hit{
+animation:hit 0.2s;
+}
+
+@keyframes hit{
+0%{transform:translateX(0);}
+25%{transform:translateX(-10px);}
+50%{transform:translateX(10px);}
+100%{transform:translateX(0);}
+}
+
+.jump{
+animation:jump 0.5s;
+}
+
+@keyframes jump{
+0%{bottom:70px;}
+50%{bottom:220px;}
+100%{bottom:70px;}
 }
 
 </style>
@@ -145,101 +143,107 @@ color:white;
 
 <body>
 
-<div class="game">
+<div id="game">
 
-<img src="Background.png" class="bg">
+<img id="bg" src="Background.png">
 
-<div class="floor"></div>
+<div id="title">MOAIVERSE ADMIN BATTLE</div>
 
-<div class="top">
-
-<div class="hp">
-<div class="fill"></div>
+<div id="heroBar" class="hpbar">
+<div id="heroHp" class="hp"></div>
 </div>
 
-<div class="timer">40</div>
-
-<div class="hp">
-<div class="fill"></div>
+<div id="enemyBar" class="hpbar">
+<div id="enemyHp" class="hp"></div>
 </div>
 
+<img id="hero" class="player" src="Hero2.png">
+<img id="enemy" class="player" src="Enemy1.png">
+
+<div class="controls">
+
+<div class="leftBtns">
+<button onclick="moveLeft()">◀</button>
+<button onclick="moveRight()">▶</button>
 </div>
 
-<div class="character left" id="player">
-<img src="Hero1.png">
+<div class="rightBtns">
+<button onclick="attack()">👊</button>
+<button onclick="jump()">⬆</button>
 </div>
 
-<div class="character right" id="enemy">
-<img src="Enemy1.png">
-</div>
-
-<div class="controls-left">
-<div class="btn" onclick="moveLeft()">◀</div>
-<div class="btn" onclick="moveRight()">▶</div>
-</div>
-
-<div class="controls-right">
-<div class="btn" onclick="attack()">👊</div>
-<div class="btn" onclick="jump()">▲</div>
 </div>
 
 </div>
 
 <script>
 
-const player = document.getElementById("player");
+let hero=document.getElementById("hero");
+let enemy=document.getElementById("enemy");
 
-let pos = 20;
+let heroX=40;
+let enemyHp=100;
 
 function moveLeft(){
+heroX-=20;
 
-pos -= 20;
-
-if(pos < 0){
-pos = 0;
+if(heroX<0){
+heroX=0;
 }
 
-player.style.left = pos + "px";
-
+hero.style.left=heroX+"px";
 }
 
 function moveRight(){
+heroX+=20;
 
-pos += 20;
-
-if(pos > window.innerWidth - 140){
-pos = window.innerWidth - 140;
+if(heroX>window.innerWidth-150){
+heroX=window.innerWidth-150;
 }
 
-player.style.left = pos + "px";
-
-}
-
-function jump(){
-
-player.style.bottom = "180px";
-
-setTimeout(()=>{
-
-player.style.bottom = "90px";
-
-},300);
-
+hero.style.left=heroX+"px";
 }
 
 function attack(){
 
-const enemy = document.getElementById("enemy");
-
-enemy.style.transform =
-"scaleX(-1) translateX(25px)";
+hero.classList.add("hit");
 
 setTimeout(()=>{
+hero.classList.remove("hit");
+},200);
 
-enemy.style.transform =
-"scaleX(-1)";
+let heroRect=hero.getBoundingClientRect();
+let enemyRect=enemy.getBoundingClientRect();
 
-},150);
+if(heroRect.right > enemyRect.left){
+
+enemy.classList.add("hit");
+
+setTimeout(()=>{
+enemy.classList.remove("hit");
+},200);
+
+enemyHp-=10;
+
+if(enemyHp<0){
+enemyHp=0;
+}
+
+document.getElementById("enemyHp").style.width=enemyHp+"%";
+
+if(enemyHp==0){
+alert("YOU WIN 🔥");
+}
+}
+}
+
+function jump(){
+
+hero.classList.add("jump");
+
+setTimeout(()=>{
+hero.classList.remove("jump");
+},500);
 
 }
 
