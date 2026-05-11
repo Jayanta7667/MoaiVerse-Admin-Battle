@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MOAIVERSE ADMIN BATTLE</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MoaiVerse Admin Battle</title>
 
 <style>
 *{
@@ -25,7 +26,7 @@ height:100vh;
 overflow:hidden;
 }
 
-#bg{
+.bg{
 position:absolute;
 width:100%;
 height:100%;
@@ -34,18 +35,16 @@ object-fit:cover;
 
 .player{
 position:absolute;
-bottom:70px;
-width:130px;
-height:260px;
-object-fit:contain;
-transition:0.1s;
+bottom:80px;
+width:170px;
+transition:0.08s linear;
 }
 
-#hero{
+#p1{
 left:40px;
 }
 
-#enemy{
+#p2{
 right:40px;
 transform:scaleX(-1);
 }
@@ -53,91 +52,65 @@ transform:scaleX(-1);
 .hpbar{
 position:absolute;
 top:20px;
-width:140px;
-height:20px;
-border:2px solid white;
+width:35%;
+height:25px;
+background:#333;
+border:3px solid white;
 border-radius:20px;
-background:#222;
 overflow:hidden;
-}
-
-#heroBar{
-left:10px;
-}
-
-#enemyBar{
-right:10px;
 }
 
 .hp{
 height:100%;
-width:100%;
 background:lime;
+width:100%;
 transition:0.2s;
 }
 
-#title{
-position:absolute;
-top:20px;
-left:50%;
-transform:translateX(-50%);
-color:white;
-font-weight:bold;
-font-size:18px;
+#hp1box{
+left:10px;
+}
+
+#hp2box{
+right:10px;
 }
 
 .controls{
 position:absolute;
-bottom:10px;
+bottom:15px;
 width:100%;
 display:flex;
 justify-content:space-between;
-padding:0 15px;
+padding:0 20px;
 }
 
-.leftBtns,
-.rightBtns{
+.leftBtns,.rightBtns{
 display:flex;
-gap:10px;
+gap:12px;
 }
 
-button{
-width:70px;
-height:70px;
+.btn{
+width:75px;
+height:75px;
+border-radius:50%;
 border:none;
-border-radius:20px;
-font-size:28px;
-background:rgba(255,255,255,0.2);
+background:rgba(255,255,255,0.25);
 color:white;
-backdrop-filter:blur(5px);
+font-size:26px;
+font-weight:bold;
+backdrop-filter:blur(4px);
 }
 
-button:active{
-transform:scale(0.9);
-background:#ff00ff;
+.title{
+position:absolute;
+top:55px;
+width:100%;
+text-align:center;
+color:white;
+font-size:28px;
+font-weight:bold;
+text-shadow:0 0 10px purple;
 }
-
-.hit{
-animation:hit 0.2s;
-}
-
-@keyframes hit{
-0%{transform:translateX(0);}
-25%{transform:translateX(-10px);}
-50%{transform:translateX(10px);}
-100%{transform:translateX(0);}
-}
-
-.jump{
-animation:jump 0.5s;
-}
-
-@keyframes jump{
-0%{bottom:70px;}
-50%{bottom:220px;}
-100%{bottom:70px;}
-}
-
 </style>
 </head>
 
@@ -145,31 +118,33 @@ animation:jump 0.5s;
 
 <div id="game">
 
-<img id="bg" src="Background.png">
+<img src="Background.png" class="bg">
 
-<div id="title">MOAIVERSE ADMIN BATTLE</div>
-
-<div id="heroBar" class="hpbar">
-<div id="heroHp" class="hp"></div>
+<div class="title">
+MOAIVERSE ADMIN BATTLE
 </div>
 
-<div id="enemyBar" class="hpbar">
-<div id="enemyHp" class="hp"></div>
+<div id="hp1box" class="hpbar">
+<div id="hp1" class="hp"></div>
 </div>
 
-<img id="hero" class="player" src="Hero2.png">
-<img id="enemy" class="player" src="Enemy1.png">
+<div id="hp2box" class="hpbar">
+<div id="hp2" class="hp"></div>
+</div>
+
+<img src="Hero2.png" id="p1" class="player">
+<img src="Enemy1.png" id="p2" class="player">
 
 <div class="controls">
 
 <div class="leftBtns">
-<button onclick="moveLeft()">◀</button>
-<button onclick="moveRight()">▶</button>
+<button class="btn" ontouchstart="moveLeft()">◀</button>
+<button class="btn" ontouchstart="moveRight()">▶</button>
 </div>
 
 <div class="rightBtns">
-<button onclick="attack()">👊</button>
-<button onclick="jump()">⬆</button>
+<button class="btn" ontouchstart="attack()">👊</button>
+<button class="btn" ontouchstart="jump()">⬆</button>
 </div>
 
 </div>
@@ -178,74 +153,89 @@ animation:jump 0.5s;
 
 <script>
 
-let hero=document.getElementById("hero");
-let enemy=document.getElementById("enemy");
+let p1 = document.getElementById("p1");
+let p2 = document.getElementById("p2");
 
-let heroX=40;
-let enemyHp=100;
+let hp2 = document.getElementById("hp2");
 
-function moveLeft(){
-heroX-=20;
+let x = 40;
+let y = 80;
 
-if(heroX<0){
-heroX=0;
+let enemyHp = 100;
+
+function update(){
+p1.style.left = x + "px";
+p1.style.bottom = y + "px";
 }
 
-hero.style.left=heroX+"px";
+function moveLeft(){
+x -= 25;
+if(x < 0) x = 0;
+update();
 }
 
 function moveRight(){
-heroX+=20;
-
-if(heroX>window.innerWidth-150){
-heroX=window.innerWidth-150;
-}
-
-hero.style.left=heroX+"px";
-}
-
-function attack(){
-
-hero.classList.add("hit");
-
-setTimeout(()=>{
-hero.classList.remove("hit");
-},200);
-
-let heroRect=hero.getBoundingClientRect();
-let enemyRect=enemy.getBoundingClientRect();
-
-if(heroRect.right > enemyRect.left){
-
-enemy.classList.add("hit");
-
-setTimeout(()=>{
-enemy.classList.remove("hit");
-},200);
-
-enemyHp-=10;
-
-if(enemyHp<0){
-enemyHp=0;
-}
-
-document.getElementById("enemyHp").style.width=enemyHp+"%";
-
-if(enemyHp==0){
-alert("YOU WIN 🔥");
-}
-}
+x += 25;
+if(x > window.innerWidth - 170)
+x = window.innerWidth - 170;
+update();
 }
 
 function jump(){
 
-hero.classList.add("jump");
+y = 220;
+update();
 
 setTimeout(()=>{
-hero.classList.remove("jump");
-},500);
+y = 80;
+update();
+},350);
 
 }
+
+function attack(){
+
+p1.style.transform = "scale(1.1)";
+
+setTimeout(()=>{
+p1.style.transform = "scale(1)";
+},120);
+
+let p1Rect = p1.getBoundingClientRect();
+let p2Rect = p2.getBoundingClientRect();
+
+if(
+p1Rect.right > p2Rect.left
+){
+
+enemyHp -= 10;
+
+if(enemyHp < 0)
+enemyHp = 0;
+
+hp2.style.width = enemyHp + "%";
+
+p2.style.filter = "brightness(2)";
+
+setTimeout(()=>{
+p2.style.filter = "brightness(1)";
+},120);
+
+if(enemyHp <= 0){
+
+p2.style.display = "none";
+
+setTimeout(()=>{
+alert("YOU WIN 🔥");
+},200);
+
+}
+
+}
+
+}
+
+update();
 
 </script>
 
