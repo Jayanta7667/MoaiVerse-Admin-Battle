@@ -1,138 +1,217 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MoaiVerse Admin Battle</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>MOAIVERSE ADMIN BATTLE</title>
 
 <style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
 body{
-margin:0;
-overflow:hidden;
-background:black;
-font-family:Arial;
-touch-action:none;
+    overflow:hidden;
+    background:black;
+    font-family:Arial, sans-serif;
 }
 
-#game{
-width:100vw;
-height:100vh;
-background:url('Background.png') center/cover no-repeat;
-position:relative;
-overflow:hidden;
+.game{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
 }
 
-#title{
-position:absolute;
-top:12px;
-left:50%;
-transform:translateX(-50%);
-color:white;
-font-size:18px;
-font-weight:bold;
-text-shadow:0 0 10px black;
-z-index:10;
+/* Background */
+
+.bg{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
-.hero,.enemy{
-position:absolute;
-bottom:80px;
-width:180px;
-height:300px;
-transition:0.25s;
+/* Top UI */
+
+.top-bar{
+    position:absolute;
+    top:15px;
+    left:0;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    padding:0 15px;
+    z-index:10;
 }
 
-.hero{
-left:10px;
+.hp{
+    width:120px;
+    height:20px;
+    border-radius:20px;
+    background:#222;
+    border:2px solid white;
+    overflow:hidden;
 }
 
-.enemy{
-right:10px;
-transform:scaleX(-1);
+.hp-fill{
+    width:100%;
+    height:100%;
+    background:lime;
 }
 
-.hero img,.enemy img{
-width:100%;
-height:100%;
-object-fit:contain;
-filter:drop-shadow(0 0 10px black);
+/* Title */
+
+.title{
+    position:absolute;
+    top:15px;
+    width:100%;
+    text-align:center;
+    color:white;
+    font-weight:bold;
+    font-size:20px;
+    z-index:10;
+    text-shadow:0 0 10px purple;
 }
 
-.health{
-position:absolute;
-top:20px;
-width:140px;
-height:18px;
-background:#222;
-border-radius:20px;
-overflow:hidden;
-border:2px solid white;
+/* Characters */
+
+.character{
+    position:absolute;
+    bottom:70px;
+    width:180px;
+    z-index:5;
+    transition:0.2s;
 }
 
-#heroHealth{
-left:10px;
+.left{
+    left:20px;
+    animation:leftMove 2s infinite alternate;
 }
 
-#enemyHealth{
-right:10px;
+.right{
+    right:20px;
+    animation:rightMove 2s infinite alternate;
 }
 
-.bar{
-width:100%;
-height:100%;
-background:lime;
-transition:0.3s;
+.character img{
+    width:100%;
+    height:auto;
+    filter:drop-shadow(0 0 20px purple);
 }
 
-#controls{
-position:absolute;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-display:flex;
-gap:10px;
-z-index:10;
+/* Floating movement */
+
+@keyframes leftMove{
+    from{
+        transform:translateY(0px);
+    }
+    to{
+        transform:translateY(-15px);
+    }
+}
+
+@keyframes rightMove{
+    from{
+        transform:translateY(-10px);
+    }
+    to{
+        transform:translateY(10px);
+    }
+}
+
+/* Attack effect */
+
+.effect{
+    position:absolute;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    background:rgba(162,0,255,0.5);
+    filter:blur(25px);
+    animation:pulse 1s infinite;
+}
+
+.effect-left{
+    bottom:220px;
+    left:170px;
+}
+
+.effect-right{
+    bottom:220px;
+    right:170px;
+}
+
+@keyframes pulse{
+    0%{
+        transform:scale(0.8);
+        opacity:0.5;
+    }
+    100%{
+        transform:scale(1.3);
+        opacity:1;
+    }
+}
+
+/* Buttons */
+
+.controls{
+    position:absolute;
+    bottom:15px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    z-index:10;
 }
 
 button{
-padding:12px 18px;
-border:none;
-border-radius:12px;
-background:linear-gradient(45deg,purple,deeppink);
-color:white;
-font-size:14px;
-font-weight:bold;
-box-shadow:0 0 10px purple;
+    padding:14px 22px;
+    border:none;
+    border-radius:12px;
+    background:purple;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
 }
 
-.hit{
-animation:hitAnim 0.2s linear;
+button:active{
+    transform:scale(0.95);
 }
 
-@keyframes hitAnim{
-0%{transform:translateX(0);}
-25%{transform:translateX(-20px);}
-50%{transform:translateX(20px);}
-100%{transform:translateX(0);}
+/* Mobile */
+
+@media(max-width:600px){
+
+.character{
+    width:140px;
 }
 
-.flash{
-position:absolute;
-width:100%;
-height:100%;
-background:white;
-opacity:0;
-pointer-events:none;
+.title{
+    font-size:15px;
 }
 
-.flashActive{
-animation:flashAnim 0.2s linear;
+.hp{
+    width:100px;
+    height:16px;
 }
 
-@keyframes flashAnim{
-0%{opacity:0.7;}
-100%{opacity:0;}
+.effect{
+    width:80px;
+    height:80px;
+}
+
+.effect-left{
+    left:110px;
+}
+
+.effect-right{
+    right:110px;
+}
+
 }
 
 </style>
@@ -140,113 +219,69 @@ animation:flashAnim 0.2s linear;
 
 <body>
 
-<div id="game">
+<div class="game">
 
-<div class="flash" id="flash"></div>
+<img src="Background.png" class="bg">
 
-<div id="title">
-MOAIVERSE ADMIN BATTLE
+<div class="top-bar">
+    <div class="hp"><div class="hp-fill"></div></div>
+    <div class="hp"><div class="hp-fill"></div></div>
 </div>
 
-<div id="heroHealth" class="health">
-<div id="heroBar" class="bar"></div>
+<div class="title">
+    MOAIVERSE ADMIN BATTLE
 </div>
 
-<div id="enemyHealth" class="health">
-<div id="enemyBar" class="bar"></div>
+<!-- Effects -->
+
+<div class="effect effect-left"></div>
+<div class="effect effect-right"></div>
+
+<!-- Characters -->
+
+<div class="character left">
+    <img src="Enemy1.png">
 </div>
 
-<div class="hero" id="hero">
-<img id="heroImage" src="Hero1.png">
+<div class="character right">
+    <img src="Hero1.png">
 </div>
 
-<div class="enemy" id="enemy">
-<img id="enemyImage" src="Enemy1.png">
-</div>
+<!-- Controls -->
 
-<div id="controls">
-<button onclick="attack()">
-ATTACK
-</button>
-
-<button onclick="changeHero()">
-CHANGE HERO
-</button>
+<div class="controls">
+    <button onclick="attack()">ATTACK</button>
+    <button onclick="changeHero()">CHANGE HERO</button>
 </div>
 
 </div>
-
-<audio id="hitSound">
-<source src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.wav">
-</audio>
 
 <script>
 
-let heroHP = 100;
-let enemyHP = 100;
-
-let heroIndex = 1;
-let enemyIndex = 1;
+const left = document.querySelector(".left");
+const right = document.querySelector(".right");
 
 function attack(){
 
-document.getElementById("hitSound").play();
+    right.style.transform = "translateX(-70px) scale(1.1)";
 
-enemyHP -= 20;
-
-if(enemyHP < 0){
-enemyHP = 0;
-}
-
-document.getElementById("enemyBar").style.width =
-enemyHP + "%";
-
-document.getElementById("enemy").classList.add("hit");
-
-document.getElementById("flash").classList.add("flashActive");
-
-setTimeout(()=>{
-document.getElementById("enemy").classList.remove("hit");
-document.getElementById("flash").classList.remove("flashActive");
-},200);
-
-if(enemyHP == 0){
-
-setTimeout(()=>{
-
-alert("Enemy Defeated!");
-
-enemyHP = 100;
-
-enemyIndex++;
-
-if(enemyIndex > 4){
-enemyIndex = 1;
-}
-
-document.getElementById("enemyBar").style.width =
-"100%";
-
-document.getElementById("enemyImage").src =
-"Enemy" + enemyIndex + ".png";
-
-},300);
+    setTimeout(()=>{
+        right.style.transform = "";
+    },300);
 
 }
 
-}
+let hero = 1;
 
 function changeHero(){
 
-heroIndex++;
+    hero++;
 
-if(heroIndex > 4){
-heroIndex = 1;
-}
+    if(hero > 4){
+        hero = 1;
+    }
 
-document.getElementById("heroImage").src =
-"Hero" + heroIndex + ".png";
-
+    document.querySelector(".right img").src = "Hero" + hero + ".png";
 }
 
 </script>
